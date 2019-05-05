@@ -1,1 +1,1 @@
-"# GravityApp" 
+# GravityApp
