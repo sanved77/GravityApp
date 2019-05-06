@@ -56,7 +56,7 @@ public class ShakeService extends Service implements SensorEventListener {
             int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             StartScreen.tvShakeService.setText("Service detects the Shake Action!! Color is also changed..!!!");
             StartScreen.tvShakeService.setTextColor(color);
-            Toast.makeText(this, "nagdi bai", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "nagdi bai", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), StartScreen.class)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
