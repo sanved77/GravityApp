@@ -40,11 +40,11 @@ import az.plainpie.PieView;
 public class StartScreen extends AppCompatActivity implements SensorEventListener, LocationListener {
 
     // UI
-    public static TextView tvShakeService;
-    public static TextView msg;
+    public  TextView tvShakeService;
+    public  TextView msg;
     TextView textView1,textView2,textView3,textView4,textView5,textView6,textView7,textView8;
-    public static Button test;
-    public static PieView pieView;
+    public  Button test;
+    public  PieView pieView;
 
     // Components
     private SensorManager sensorManager;
@@ -55,7 +55,15 @@ public class StartScreen extends AppCompatActivity implements SensorEventListene
     private float y_arr[];
     private float z_arr[];
 
+    // Hard
+    String[][] msgNormal = {
+            {"Normal Range", "Device with enclosed metal around", "Electronic Device Present - E.g TV", "Electronic Device Present - E.g Laptop, Desktop"},
+            {"Normal Range", "Presence of light wiring", "Presence of medium wiring", "Presence of high wiring"}
+    };
+
     int index;
+
+    int mode = 0;
 
     int count;
 
@@ -105,11 +113,16 @@ public class StartScreen extends AppCompatActivity implements SensorEventListene
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pieView.setInnerText("69");
-                //pieView.setMainBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
-                //pieView.setInnerBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.darkred));
-                pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
-                pieView.setPercentage((float) 69);
+
+                if(mode == 1) {
+                    mode = 0;
+                    test.setText("Mode - Electronic Device");
+                }else{
+                    mode = 1;
+                    test.setText("Mode - Buried Power Lines");
+                }
+
+
             }
         });
 
@@ -226,27 +239,53 @@ public class StartScreen extends AppCompatActivity implements SensorEventListene
 
         pieView.setPercentage( corrected_metalpower/2);
         pieView.setInnerText("" + corrected_metalpower);
-        if(corrected_metalpower < 80){
-            msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.green));
-            pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.green));
-            msg.setText("Normal Range");
-        }else if(corrected_metalpower >= 80 && corrected_metalpower < 100){
-            msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.yellow));
-            pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.yellow));
-            msg.setText("Device with enclosed metal around");
-            toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,300);
-        }else if(corrected_metalpower >= 100 && corrected_metalpower < 200){
-            msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
-            pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
-            msg.setText("Electronic Device Present - E.g TV");
-            toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,200);
-        }else if(corrected_metalpower >= 200){
-            msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.red));
-            pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.red));
-            msg.setText("Electronic Device Present - E.g Laptop, Desktop");
-            toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,100);
+
+        if(mode == 1){
+            if(corrected_metalpower < 70){
+                msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.green));
+                pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.green));
+                msg.setText(msgNormal[mode][0]);
+            }else if(corrected_metalpower >= 70 && corrected_metalpower < 90){
+                msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.yellow));
+                pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.yellow));
+                msg.setText(msgNormal[mode][1]);
+                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,300);
+            }else if(corrected_metalpower >= 90 && corrected_metalpower < 169){
+                msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
+                pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
+                msg.setText(msgNormal[mode][2]);
+                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,200);
+            }else if(corrected_metalpower >= 170){
+                msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.red));
+                pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.red));
+                msg.setText(msgNormal[mode][3]);
+                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,100);
+            }
+            toneGen1.release();
+        }else {
+            if(corrected_metalpower < 80){
+                msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.green));
+                pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.green));
+                msg.setText(msgNormal[mode][0]);
+            }else if(corrected_metalpower >= 80 && corrected_metalpower < 100){
+                msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.yellow));
+                pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.yellow));
+                msg.setText(msgNormal[mode][1]);
+                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,300);
+            }else if(corrected_metalpower >= 100 && corrected_metalpower < 200){
+                msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
+                pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
+                msg.setText(msgNormal[mode][2]);
+                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,200);
+            }else if(corrected_metalpower >= 200){
+                msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.red));
+                pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.red));
+                msg.setText(msgNormal[mode][3]);
+                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,100);
+            }
+            toneGen1.release();
         }
-        toneGen1.release();
+
         //pieView.setMainBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
         //pieView.setInnerBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.darkred));
 
@@ -288,4 +327,5 @@ public class StartScreen extends AppCompatActivity implements SensorEventListene
     public void onProviderDisabled(String provider) {
 
     }
+
 }
