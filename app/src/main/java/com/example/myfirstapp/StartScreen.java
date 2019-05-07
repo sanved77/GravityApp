@@ -1,13 +1,17 @@
 package com.example.myfirstapp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationListener;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -37,6 +41,8 @@ public class StartScreen extends AppCompatActivity implements SensorEventListene
 
     // UI
     public static TextView tvShakeService;
+    public static TextView msg;
+    TextView textView1,textView2,textView3,textView4,textView5,textView6,textView7,textView8;
     public static Button test;
     public static PieView pieView;
 
@@ -70,6 +76,17 @@ public class StartScreen extends AppCompatActivity implements SensorEventListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_screen);
 
+         textView1 = (TextView)findViewById(R.id.locationTextView1);
+         textView2 = (TextView)findViewById(R.id.locationTextView2);
+         textView3 = (TextView)findViewById(R.id.locationTextView3);
+         textView4 = (TextView)findViewById(R.id.locationTextView4);
+
+        //+
+         textView5 = (TextView)findViewById(R.id.locationTextView5);
+         textView6 = (TextView)findViewById(R.id.locationTextView6);
+         textView7 = (TextView)findViewById(R.id.locationTextView7);
+         textView8 = (TextView)findViewById(R.id.locationTextView8);
+
         Intent intent = new Intent(this, ShakeService.class);
         startService(intent);
 
@@ -82,6 +99,7 @@ public class StartScreen extends AppCompatActivity implements SensorEventListene
         pieView.setPercentageBackgroundColor(getResources().getColor(R.color.blue));
 
         tvShakeService = findViewById(R.id.tvShakeService);
+        msg = findViewById(R.id.tvMsg);
         test = findViewById(R.id.bTest);
 
         test.setOnClickListener(new View.OnClickListener() {
@@ -114,16 +132,7 @@ public class StartScreen extends AppCompatActivity implements SensorEventListene
     @Override
     public void onSensorChanged(SensorEvent event) {
 //        TextView textView = (TextView)findViewById(R.id.simpleTextView);
-        TextView textView1 = (TextView)findViewById(R.id.locationTextView1);
-        TextView textView2 = (TextView)findViewById(R.id.locationTextView2);
-        TextView textView3 = (TextView)findViewById(R.id.locationTextView3);
-        TextView textView4 = (TextView)findViewById(R.id.locationTextView4);
 
-        //+
-        TextView textView5 = (TextView)findViewById(R.id.locationTextView5);
-        TextView textView6 = (TextView)findViewById(R.id.locationTextView6);
-        TextView textView7 = (TextView)findViewById(R.id.locationTextView7);
-        TextView textView8 = (TextView)findViewById(R.id.locationTextView8);
         //-
 
         float x = event.values[0];
@@ -210,82 +219,37 @@ public class StartScreen extends AppCompatActivity implements SensorEventListene
                 + corrected_y + " Corr Z: "
                 + corrected_z + " Corr Strength: "
                 + corrected_metalpower);
-        //logger.info(str);
-        //-
 
 
-//        x_arr[count] = x;
-//        y_arr[count] = y;
-//        z_arr[count] = z;
-//        count++;
-//
-//
-//        if (10 == count) {
-//            float min_x = x_arr[0], min_y = y_arr[0], min_z = z_arr[0];
-//            float max_x = x_arr[0], max_y = y_arr[0], max_z = z_arr[0];
-//
-//            for (int i = 1; i < count; i++) {
-//                if (min_x > x_arr[i]) {
-//                    min_x = x_arr[i];
-//                }
-//                if (min_y > y_arr[i]) {
-//                    min_y = y_arr[i];
-//                }
-//                if (min_z > y_arr[i]) {
-//                    min_z = y_arr[i];
-//                }
-//
-//                if (max_x < x_arr[i]) {
-//                    max_x = x_arr[i];
-//                }
-//                if (max_y < y_arr[i]) {
-//                    max_y = y_arr[i];
-//                }
-//                if (max_z < z_arr[i]) {
-//                    max_z = z_arr[i];
-//                }
-//            }
-//
-//            float avg_delta_x = (max_x - min_x) / 2;
-//            float avg_delta_y = (max_y - min_y) / 2;
-//            float avg_delta_z = (max_z - min_z) / 2;
-//
-//            float avg_delta = (avg_delta_x + avg_delta_y + avg_delta_z) / 3;
-//
-//            float scale_x = 1.0f;
-//            if (0 != avg_delta_x) {
-//                scale_x = avg_delta / avg_delta_x;
-//            }
-//            float scale_y = 1.0f;
-//            if (0 != avg_delta_y) {
-//                scale_y = avg_delta / avg_delta_y;
-//            }
-//            float scale_z = 1.0f;
-//            if (0 != avg_delta_z) {
-//                scale_z = avg_delta / avg_delta_z;
-//            }
-//
-//            float corrected_x = x * scale_x;
-//            float corrected_y = y * scale_y;
-//            float corrected_z = z * scale_z;
-//            float corrected_metalpower = Math.round(Math.sqrt(Math.pow(corrected_x, 2)
-//                    + Math.pow(corrected_y, 2)
-//                    + Math.pow(corrected_z, 2)));
-//
-//            textView5.setText("Corr X: " + corrected_x);
-//            textView6.setText("Corr Y: " + corrected_y);
-//            textView7.setText("Corr Z: " + corrected_z);
-//            textView8.setText("Corr Strength: " + corrected_metalpower);
-//
-//            str = new String("Corr X: "
-//                    + corrected_x + " Corr Y: "
-//                    + corrected_y + " Corr Z: "
-//                    + corrected_z + " Corr Strength: "
-//                    + metalpower);
-//            logger.info(str);
-//
-//            count = 0;
-//        }
+        // UI setup
+        ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+
+        pieView.setPercentage( corrected_metalpower/2);
+        pieView.setInnerText("" + corrected_metalpower);
+        if(corrected_metalpower < 80){
+            msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.green));
+            pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.green));
+            msg.setText("Normal Range");
+        }else if(corrected_metalpower >= 80 && corrected_metalpower < 100){
+            msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.yellow));
+            pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.yellow));
+            msg.setText("Device with enclosed metal around");
+            toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,300);
+        }else if(corrected_metalpower >= 100 && corrected_metalpower < 200){
+            msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
+            pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
+            msg.setText("Electronic Device Present - E.g TV");
+            toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,200);
+        }else if(corrected_metalpower >= 200){
+            msg.setTextColor(ContextCompat.getColor(StartScreen.this, R.color.red));
+            pieView.setPercentageBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.red));
+            msg.setText("Electronic Device Present - E.g Laptop, Desktop");
+            toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,100);
+        }
+        toneGen1.release();
+        //pieView.setMainBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.orange));
+        //pieView.setInnerBackgroundColor(ContextCompat.getColor(StartScreen.this, R.color.darkred));
+
 
     }
 
